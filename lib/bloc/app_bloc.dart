@@ -4,34 +4,37 @@ import 'app_event.dart';
 import 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
+  int currentPage = 1;
+  final limiteChangeRegister = 100;
   AppBloc() : super(InitData()) {
     on<ObtenerDatos>(_obtenerEstadoAppBar);
   }
 
   Future<void> _obtenerEstadoAppBar(
       ObtenerDatos event, Emitter<AppState> emit) async {
-    emit(LoadingData(allData: state.data));
+    // aplicamos una validacion para que si ya se llego al tope de 100
+    // registros no continue
+    if (state.data.length < limiteChangeRegister) {
+      emit(LoadingData(allData: state.data));
 
-    await Future.delayed(const Duration(seconds: 4));
-    final data = state.data;
+      await Future.delayed(const Duration(seconds: 4));
 
-    data.addAll([
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "10",
-      "11",
-      "12",
-      "13",
-      "14",
-      "15",
-    ]);
-    emit(GetData(allData: data));
+      //cargando lista dinamica de 15 en 15 con un total de 100 registros
+
+      List<String> data = state.data;
+
+      final indexInitial = (currentPage - 1) * 15;
+
+      final indexFinal = indexInitial + 15;
+
+      for (var i = indexInitial;
+          i < indexFinal && i < limiteChangeRegister;
+          i++) {
+        data.add('${i + 1}');
+      }
+      emit(GetData(allData: data));
+
+      currentPage++;
+    }
   }
 }
