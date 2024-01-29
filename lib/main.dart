@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/app_bloc.dart';
 import 'view/lista_widget.dart';
+//import 'view/prueba.dart';
 
 void main() {
   runApp(const MyApp());

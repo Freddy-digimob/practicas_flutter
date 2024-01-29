@@ -28,9 +28,8 @@ class _ListaWidgetState extends State<ListaWidget> {
   }
 
   void onListener() {
-    if (_scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent &&
-        !isCargando) {
+    final nextChangeData = _scrollController.position.maxScrollExtent * 0.8;
+    if (_scrollController.position.pixels > nextChangeData && !isCargando) {
       obtenerDatos();
     }
   }
